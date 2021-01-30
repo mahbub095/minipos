@@ -17,7 +17,7 @@ class BaseController extends Controller
     protected function setPageData($page_title,$sub_title,$page_icon)
     {
         view()->share(['page_title'=>$page_title,'sub_title'=>$sub_title,'page_icon'=>$page_icon]);
-    } 
+    }
 
     /**
      * @param $error_code
