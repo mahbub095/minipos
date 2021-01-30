@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Auth::routes(['register'=>false]); 
+Auth::routes(['register'=>false]);
 
 
 
@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'MenuController@delete')->name('delete');
         Route::post('bulk-delete', 'MenuController@bulk_delete')->name('bulk.delete');
         Route::post('order/{menu}','MenuController@orderItem')->name('order');
-        
+
         //Module Routes
         Route::get('builder/{id}','ModuleController@index')->name('builder');
         Route::group(['prefix' => 'module', 'as'=>'module.'], function () {
@@ -82,5 +82,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('setting','SettingController@index')->name('setting');
     Route::post('general-setting','SettingController@general_seting')->name('general.setting');
     Route::post('mail-setting','SettingController@mail_setting')->name('mail.setting');
-    
+
 });

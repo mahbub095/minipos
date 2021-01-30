@@ -19,13 +19,13 @@ class MenuController extends BaseController
 
     public function index()
     {
-        if(permission('menu-access')){
+       /* if(permission('menu-access')){
             $this->setPageData('Menu','Menu','fas fa-th-list');
             return view('menu.index');
         }else{
             return $this->unauthorized_access_blocked();
-        }
-
+        }*/
+        return view('menu.index');
     }
 
     public function get_datatable_data(Request $request)

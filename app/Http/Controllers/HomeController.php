@@ -23,12 +23,13 @@ class HomeController extends BaseController
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
+    {/*
         if (permission('dashboard-access')) {
             return view('home');
         }else{
             return $this->unauthorized_access_blocked();
-        }
+        }*/
+        return view('home');
     }
 
     public function unauthorized()
