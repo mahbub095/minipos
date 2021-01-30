@@ -1,4 +1,4 @@
-<?php
+<?php 
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
@@ -77,7 +77,7 @@ class BaseRepository{
         return $this->model->orderBy($orderBY,$sortBy)->get($columns);
     }
 
-    /**
+     /**
      * @param int $id
      * @return mixed
      */
@@ -86,7 +86,7 @@ class BaseRepository{
         return $this->model->find($id);
     }
 
-    /**
+     /**
      * @param int $id
      * @return mixed
      * @throws ModelNotFoundException
@@ -96,7 +96,7 @@ class BaseRepository{
         return $this->model->findOrFail($id);
     }
 
-    /**
+     /**
      * @param array $data
      * @return mixed
      */
@@ -105,7 +105,7 @@ class BaseRepository{
         return $this->model->where($data)->get();
     }
 
-    /**
+     /**
      * @param array $data
      * @return mixed
      */
@@ -114,7 +114,7 @@ class BaseRepository{
         return $this->model->where($data)->first();
     }
 
-    /**
+     /**
      * @param array $data
      * @return mixed
      * @throws ModelNotFoundException

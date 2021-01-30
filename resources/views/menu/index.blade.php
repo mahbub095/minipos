@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ $page_title }}
+    {{ $page_title ?? '' }}
 @endsection
 
 @push('stylesheet')
-    
+
 @endpush
 
 @section('content')
@@ -16,7 +16,7 @@
         <div class="col-xl-12 pb-3">
             <ol class="breadcrumb bg-white">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
-                <li class="active breadcrumb-item">{{ $sub_title }}</li>
+                <li class="active breadcrumb-item">{{ $sub_title ?? '' }}</li>
               </ol>
         </div>
         <!-- Grid Item -->
@@ -27,7 +27,7 @@
 
                 <!-- Entry Heading -->
                 <div class="dt-entry__heading">
-                    <h2 class="dt-page__title mb-0 text-primary"><i class="{{ $page_icon }}"></i> {{ $sub_title }}</h2>
+                    <h2 class="dt-page__title mb-0 text-primary"><i class="{{ $page_icon ?? '' }}"></i> {{ $sub_title ?? '' }}</h2>
                 </div>
                 <!-- /entry heading -->
                 @if (permission('menu-add'))
@@ -35,7 +35,7 @@
                     <i class="fas fa-plus-square"></i> Add New
                  </button>
                 @endif
-                
+
 
             </div>
             <!-- /entry header -->
@@ -117,7 +117,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -134,7 +134,7 @@ $(document).ready(function(){
         "columnDefs": [{
                 @if (permission('menu-bulk-delete'))
                 "targets": [0,4],
-                @else 
+                @else
                 "targets": [3],
                 @endif
                 "orderable": false,
@@ -143,7 +143,7 @@ $(document).ready(function(){
             {
                 @if (permission('menu-bulk-delete'))
                 "targets": [1,3],
-                @else 
+                @else
                 "targets": [0,2],
                 @endif
                 "className": "text-center"
@@ -210,7 +210,7 @@ $(document).ready(function(){
                     columns: [1, 2, 3]
                 },
             },
-            @endif 
+            @endif
             @if (permission('menu-bulk-delete'))
             {
                 'className':'btn btn-danger btn-sm delete_btn d-none text-white',

@@ -3,34 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\MenuService;
-use App\Services\ModuleService;
+use App\Services\RoleService;
+use App\Services\UserService;
+use App\Http\Requests\UserFormRequest;
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\MenuRequest;
 
-class MenuController extends BaseController
+
+class UserController extends BaseController
 {
-    protected $module;
-    public function __construct(MenuService $menu,ModuleService $module)
+    protected $role;
+    public function __construct(UserService $user, RoleService $role)
     {
-        $this->service = $menu;
-        $this->module = $module;
+        $this->service = $user;
+        $this->role    = $role;
     }
 
     public function index()
     {
-        if(permission('menu-access')){
-            $this->setPageData('Menu','Menu','fas fa-th-list');
-            return view('menu.index');
-        }else{
+        if (permission('user-access')) {
+            $this->setPageData('User','User','fas fa-users');
+            $roles = $this->role->index();
+            return view('user.index',compact('roles'));
+        } else {
             return $this->unauthorized_access_blocked();
         }
-
+        
+        
     }
 
     public function get_datatable_data(Request $request)
     {
-        if(permission('menu-access')){
+        if (permission('user-access')) {
             if($request->ajax()){
                 $output = $this->service->get_datatable_data($request);
             }else{
@@ -41,10 +44,10 @@ class MenuController extends BaseController
         }
     }
 
-    public function store_or_update_data(MenuRequest $request)
+    public function store_or_update_data(UserFormRequest $request)
     {
         if($request->ajax()){
-            if(permission('menu-add') || permission('menu-edit')){
+            if (permission('user-access') || permission('user-edit')) {
                 $result = $this->service->store_or_update_data($request);
                 if($result){
                     return $this->response_json($status='success',$message='Data Has Been Saved Successfully',$data=null,$response_code=200);
@@ -62,7 +65,7 @@ class MenuController extends BaseController
     public function edit(Request $request)
     {
         if($request->ajax()){
-            if(permission('menu-edit')){
+            if (permission('user-edit')) {
                 $data = $this->service->edit($request);
                 if($data->count()){
                     return $this->response_json($status='success',$message=null,$data=$data,$response_code=201);
@@ -77,10 +80,20 @@ class MenuController extends BaseController
         }
     }
 
+    public function show(Request $request)
+    {
+        if($request->ajax()){
+            if (permission('user-view')) {
+                $user = $this->service->edit($request);
+                return view('user.details',compact('user'))->render();
+            }
+        }
+    }
+
     public function delete(Request $request)
     {
         if($request->ajax()){
-            if(permission('menu-delete')){
+            if (permission('user-delete')) {
                 $result = $this->service->delete($request);
                 if($result){
                     return $this->response_json($status='success',$message='Data Has Been Deleted Successfully',$data=null,$response_code=200);
@@ -98,7 +111,7 @@ class MenuController extends BaseController
     public function bulk_delete(Request $request)
     {
         if($request->ajax()){
-            if(permission('menu-bulk-delete')){
+            if (permission('user-bulk-delete')) {
                 $result = $this->service->bulk_delete($request);
                 if($result){
                     return $this->response_json($status='success',$message='Data Has Been Deleted Successfully',$data=null,$response_code=200);
@@ -112,10 +125,21 @@ class MenuController extends BaseController
            return $this->response_json($status='error',$message=null,$data=null,$response_code=401);
         }
     }
-
-    public function orderItem(Request $request){
-        $menuItemOrder = json_decode($request->input('order'));
-        $this->service->orderMenu($menuItemOrder, null);
-        $this->module->restore_session_module();
+    public function change_status(Request $request)
+    {
+        if($request->ajax()){
+            if (permission('user-edit')) {
+            $result = $this->service->change_status($request);
+            if($result){
+                return $this->response_json($status='success',$message='Status CHanged Successfully',$data=null,$response_code=200);
+            }else{
+                return $this->response_json($status='error',$message='Failed TO Change Status',$data=null,$response_code=204);
+            }
+        }else{
+            return $this->response_json($status='error',$message='Unauthorized Access Blocked',$data=null,$response_code=401);
+        }
+        }else{
+           return $this->response_json($status='error',$message=null,$data=null,$response_code=401);
+        }
     }
 }
